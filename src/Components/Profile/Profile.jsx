@@ -7,7 +7,8 @@ import axios from 'axios'
 import { Helmet } from 'react-helmet'
 
 const Profile = () => {
-  const { user: loggedUserId } = jwtDecode(localStorage.getItem('token'))
+  const decoded = jwtDecode(localStorage.getItem('token'))
+  const loggedUserId = decoded.id || decoded.userId || decoded.user
 
   // console.log(loggedUserId);
 
@@ -43,10 +44,8 @@ const Profile = () => {
 
   return (
     <section className='w-full md:w-3/4 p-5 lg:w-1/2 my-4 mx-auto'>
-
-      {/* in react version 19 possible  write title without using react helmet */}
       <Helmet>
-        <title>Profile - {data?.data.posts[0].user.name}</title>
+        <title>Profile - {data?.data?.posts?.[0]?.user?.name || 'Profile'}</title>
       </Helmet>
       <div className='mb-5 text-center'>
         <AddPost />
